@@ -1,6 +1,6 @@
 # corona
 
-A new Flutter project.
+A simple not-so-good-looking app to monitor COVID-19 cases around the world
 
 ## Getting Started
 
