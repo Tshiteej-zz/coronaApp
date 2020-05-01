@@ -7,26 +7,28 @@ import 'dart:convert';
 class CountryData {
   final String name;
   final String population;
-  final String t_deaths;
-  final String t_confirmed;
+  final String tdeaths;
+  final String tconfirmed;
   final String deaths;
   final String confirmed;
   final String recovered;
   final String critical;
-  final String death_rate;
-  final String recovery_rate;
+  final String deathrate;
+  final String recoveryrate;
+  final String updated;
 
   CountryData(
       {this.name,
-      this.recovery_rate,
-      this.death_rate,
+      this.recoveryrate,
+      this.deathrate,
       this.critical,
       this.recovered,
       this.confirmed,
       this.deaths,
-      this.t_confirmed,
-      this.t_deaths,
-      this.population});
+      this.tconfirmed,
+      this.tdeaths,
+      this.population,
+      this.updated});
 }
 
 // List<CountryData> res = [];
@@ -50,15 +52,16 @@ class SecondPage extends StatelessWidget {
     CountryData dat = CountryData(
         name: jsonData['name'],
         population: jsonData['population'].toString(),
-        t_deaths: jsonData['today']['deaths'].toString(),
-        t_confirmed: jsonData['today']['confirmed'].toString(),
+        tdeaths: jsonData['today']['deaths'].toString(),
+        tconfirmed: jsonData['today']['confirmed'].toString(),
         deaths: jsonData['latest_data']['deaths'].toString(),
         confirmed: jsonData['latest_data']['confirmed'].toString(),
         recovered: jsonData['latest_data']['recovered'].toString(),
         critical: jsonData['latest_data']['critical'].toString(),
-        death_rate:
+        updated: jsonData['updated_at'].toString(),
+        deathrate:
             jsonData['latest_data']['calculated']['death_rate'].toString(),
-        recovery_rate:
+        recoveryrate:
             jsonData['latest_data']['calculated']['recovery_rate'].toString());
     res.add(dat);
     return res;
@@ -70,7 +73,7 @@ class SecondPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
-        title: Text("Details: ${code}"),
+        title: Text("Details: $code"),
       ),
       body: FutureBuilder(
         future: getJSONData(),
@@ -83,13 +86,13 @@ class SecondPage extends StatelessWidget {
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
-                      padding: EdgeInsets.fromLTRB(5, 100, 5, 0),
+                      padding: EdgeInsets.fromLTRB(5, 80, 5, 0),
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: new BorderRadius.circular(20.0),
                         ),
                         padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
-                        height: 350,
+                        height: 400,
                         width: double.maxFinite,
                         child: Card(
                           shape: RoundedRectangleBorder(
@@ -142,7 +145,7 @@ class SecondPage extends StatelessWidget {
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        snapshot.data[index].t_deaths,
+                                        snapshot.data[index].tdeaths,
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
@@ -162,7 +165,7 @@ class SecondPage extends StatelessWidget {
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        snapshot.data[index].t_confirmed,
+                                        snapshot.data[index].tconfirmed,
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
@@ -242,7 +245,7 @@ class SecondPage extends StatelessWidget {
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        snapshot.data[index].death_rate,
+                                        snapshot.data[index].deathrate,
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
@@ -262,10 +265,35 @@ class SecondPage extends StatelessWidget {
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        snapshot.data[index].recovery_rate,
+                                        snapshot.data[index].recoveryrate,
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
+                                      ),
+                                    ]),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(15, 20, 15, 0),
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                        "Last updated",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          // fontWeight: FontWeight.bold
+                                        ),
+                                      ),
+                                      Text(
+                                        DateTime.parse(
+                                                snapshot.data[index].updated)
+                                            .toString()
+                                            .split('.')[0],
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          // fontWeight: FontWeight.bold
+                                        ),
                                       ),
                                     ]),
                               ),
